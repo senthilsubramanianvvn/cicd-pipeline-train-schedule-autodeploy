@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         //be sure to replace "willbla" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "willbla/train-schedule"
+        DOCKER_IMAGE_NAME = "senthilbalaji/train-schedule"
         CANARY_REPLICAS = 0
     }
     stages {
@@ -20,9 +20,9 @@ pipeline {
             steps {
                 script {
                     app = docker.build(DOCKER_IMAGE_NAME)
-                    app.inside {
-                        sh 'echo Hello, World!'
-                    }
+                    //app.inside {
+                     //   sh 'echo Hello, World!'
+                    //}
                 }
             }
         }
@@ -62,7 +62,7 @@ pipeline {
                 script {
                     sleep (time: 5)
                     def response = httpRequest (
-                        url: "http://$KUBE_MASTER_IP:8081/",
+                        url: "http://$KUBE_SLAVE_IP:32223/",
                         timeout: 30
                     )
                     if (response.status != 200) {
